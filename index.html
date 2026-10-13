@@ -38,7 +38,6 @@
       overflow-x: hidden;
     }
 
-    /* Ambient glow elements */
     .glow-circle {
       position: fixed;
       width: 400px;
@@ -135,7 +134,6 @@
       box-shadow: 0 8px 20px -4px var(--primary-glow);
     }
 
-    /* Result Animation */
     .result-box {
       display: none;
       border-top: 1px solid var(--border);
@@ -149,9 +147,18 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
+    .team-badge {
+      display: block;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
     .code-badge {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 1.3rem;
+      font-size: 1.35rem;
       font-weight: 700;
       color: var(--accent);
       background: rgba(34, 211, 238, 0.1);
@@ -165,7 +172,7 @@
     .theme-pill {
       display: inline-block;
       background: rgba(255, 255, 255, 0.08);
-      padding: 4px 12px;
+      padding: 5px 14px;
       border-radius: 6px;
       color: #cbd5e1;
       font-size: 0.85rem;
@@ -176,7 +183,7 @@
     }
 
     .statement-title {
-      font-size: 1.6rem;
+      font-size: 1.55rem;
       font-weight: 700;
       color: #fff;
       line-height: 1.3;
@@ -196,7 +203,7 @@
   <div class="container">
     <div class="badge">NEXORA '26 Hackathon</div>
     <h1>Problem Statement Reveal</h1>
-    <p class="subtitle">Enter your Team ID or assigned Team Number (1 - 25) to unlock your challenge.</p>
+    <p class="subtitle">Enter your Team Number (1 to 33) to unlock your assigned challenge.</p>
 
     <div class="card">
       <form id="revealForm" onsubmit="handleReveal(event)">
@@ -204,16 +211,17 @@
           <input 
             type="text" 
             id="teamInput" 
-            placeholder="e.g. 5 or TEAM-05" 
+            placeholder="e.g. 5, Team 12, Team 30" 
             autocomplete="off" 
             required
           />
           <button type="submit">Unlock</button>
         </div>
       </form>
-      <div id="errorMsg" class="error-msg">Please enter a valid Team Number between 1 and 25.</div>
+      <div id="errorMsg" class="error-msg">Please enter a valid Team Number between 1 and 33.</div>
 
       <div id="resultBox" class="result-box">
+        <span class="team-badge" id="assignedTeam">Assigned to Team #</span>
         <div class="code-badge" id="psCode">NX2601</div>
         <br />
         <span class="theme-pill" id="psTheme">Theme Sector</span>
@@ -223,34 +231,35 @@
   </div>
 
   <script>
-    // Complete 25 Problem Statements from NEXORA'26
     const problemStatements = [
-      { id: 1,  code: "NX2601", sector: "Retail & Small Business", title: "AI-Powered Small-Business Demand Forecaster" },
-      { id: 2,  code: "NX2602", sector: "Education", title: "ML-Based Student Support Early-Warning Dashboard" },
-      { id: 3,  code: "NX2603", sector: "Water & Environment", title: "AI-Based Urban Flood Hotspot Predictor" },
-      { id: 4,  code: "NX2604", sector: "Disaster Recovery", title: "Damage Report Triage and Recovery Prioritizer" },
-      { id: 5,  code: "NX2605", sector: "Agriculture & Food Systems", title: "AI-Assisted Irrigation Scheduling" },
-      { id: 6,  code: "NX2606", sector: "Waste Management", title: "ML-Based Waste Sorting Helper" },
-      { id: 7,  code: "NX2607", sector: "IoT", title: "IoT Smart Cold-Storage Failure Predictor" },
-      { id: 8,  code: "NX2608", sector: "Food Redistribution", title: "AI Food-Surplus Rescue Matcher" },
-      { id: 9,  code: "NX2609", sector: "Private Sector", title: "AI Workplace Near-Miss Pattern Analyzer" },
-      { id: 10, code: "NX2610", sector: "Tourism & Heritage", title: "AI-Powered Heritage Site Crowd and Wear Monitor" },
-      { id: 11, code: "NX2611", sector: "Agriculture & Food Systems", title: "ML-Powered Crop Residue Value Matcher" },
-      { id: 12, code: "NX2612", sector: "Emergency Response", title: "Offline-First Emergency Resource Prioritizer" },
-      { id: 13, code: "NX2613", sector: "Information Integrity", title: "Evidence-Aware Misinformation Context Tracker" },
-      { id: 14, code: "NX2614", sector: "Public Transport", title: "AI-Assisted Public Transport Crowd Estimator" },
-      { id: 15, code: "NX2615", sector: "Cybersecurity", title: "Phishing Message Pattern Detector for Regional Languages" },
-      { id: 16, code: "NX2616", sector: "Agriculture & Food Systems", title: "AI-Based Post-Harvest Spoilage Risk Predictor" },
-      { id: 17, code: "NX2617", sector: "IoT", title: "AI-Based Smart Water-Leak Detection" },
-      { id: 18, code: "NX2618", sector: "Agriculture & Food Systems", title: "Harvest Readiness and Logistics Planner" },
-      { id: 19, code: "NX2619", sector: "Healthcare Operations", title: "Smart Clinic Appointment No-Show Predictor" },
-      { id: 20, code: "NX2620", sector: "Accessibility", title: "AI-Assisted Accessibility Issue Reporter" },
-      { id: 21, code: "NX2621", sector: "Accessibility", title: "AI Accessibility Document Simplifier" },
-      { id: 22, code: "NX2622", sector: "E-Waste & Sustainability", title: "ML-Based E-Waste Repairability Recommender" },
-      { id: 23, code: "NX2623", sector: "Private Sector", title: "AI Knowledge-Handover Assistant" },
-      { id: 24, code: "NX2624", sector: "Agriculture & Food Systems", title: "Crop Leaf Disease Screening with Confidence" },
-      { id: 25, code: "NX2625", sector: "Private Sector", title: "ML-Based Supplier Disruption Risk Predictor" }
+      { code: "NX2601", sector: "Retail & Small Business", title: "AI-Powered Small-Business Demand Forecaster" },
+      { code: "NX2602", sector: "Education", title: "ML-Based Student Support Early-Warning Dashboard" },
+      { code: "NX2603", sector: "Water & Environment", title: "AI-Based Urban Flood Hotspot Predictor" },
+      { code: "NX2604", sector: "Disaster Recovery", title: "Damage Report Triage and Recovery Prioritizer" },
+      { code: "NX2605", sector: "Agriculture & Food Systems", title: "AI-Assisted Irrigation Scheduling" },
+      { code: "NX2606", sector: "Waste Management", title: "ML-Based Waste Sorting Helper" },
+      { code: "NX2607", sector: "IoT", title: "IoT Smart Cold-Storage Failure Predictor" },
+      { code: "NX2608", sector: "Food Redistribution", title: "AI Food-Surplus Rescue Matcher" },
+      { code: "NX2609", sector: "Private Sector", title: "AI Workplace Near-Miss Pattern Analyzer" },
+      { code: "NX2610", sector: "Tourism & Heritage", title: "AI-Powered Heritage Site Crowd and Wear Monitor" },
+      { code: "NX2611", sector: "Agriculture & Food Systems", title: "ML-Powered Crop Residue Value Matcher" },
+      { code: "NX2612", sector: "Emergency Response", title: "Offline-First Emergency Resource Prioritizer" },
+      { code: "NX2613", sector: "Information Integrity", title: "Evidence-Aware Misinformation Context Tracker" },
+      { code: "NX2614", sector: "Public Transport", title: "AI-Assisted Public Transport Crowd Estimator" },
+      { code: "NX2615", sector: "Cybersecurity", title: "Phishing Message Pattern Detector for Regional Languages" },
+      { code: "NX2616", sector: "Agriculture & Food Systems", title: "AI-Based Post-Harvest Spoilage Risk Predictor" },
+      { code: "NX2617", sector: "IoT", title: "AI-Based Smart Water-Leak Detection" },
+      { code: "NX2618", sector: "Agriculture & Food Systems", title: "Harvest Readiness and Logistics Planner" },
+      { code: "NX2619", sector: "Healthcare Operations", title: "Smart Clinic Appointment No-Show Predictor" },
+      { code: "NX2620", sector: "Accessibility", title: "AI-Assisted Accessibility Issue Reporter" },
+      { code: "NX2621", sector: "Accessibility", title: "AI Accessibility Document Simplifier" },
+      { code: "NX2622", sector: "E-Waste & Sustainability", title: "ML-Based E-Waste Repairability Recommender" },
+      { code: "NX2623", sector: "Private Sector", title: "AI Knowledge-Handover Assistant" },
+      { code: "NX2624", sector: "Agriculture & Food Systems", title: "Crop Leaf Disease Screening with Confidence" },
+      { code: "NX2625", sector: "Private Sector", title: "ML-Based Supplier Disruption Risk Predictor" }
     ];
+
+    const TOTAL_TEAMS = 33;
 
     function handleReveal(e) {
       e.preventDefault();
@@ -258,9 +267,31 @@
       const errorMsg = document.getElementById("errorMsg");
       const resultBox = document.getElementById("resultBox");
 
-      // Extract number from input (accepts "5", "Team 5", "TEAM-05", etc.)
-      const extractedNumber = parseInt(rawInput.replace(/\D/g, ""), 10);
+      // Extract numeric digits
+      const teamNumber = parseInt(rawInput.replace(/\D/g, ""), 10);
 
-      if (!extractedNumber || extractedNumber < 1 || extractedNumber > 25) {
+      // Validate between 1 and 33
+      if (!teamNumber || teamNumber < 1 || teamNumber > TOTAL_TEAMS) {
         errorMsg.style.display = "block";
-        resultBox.style.
+        resultBox.style.display = "none";
+        return;
+      }
+
+      errorMsg.style.display = "none";
+
+      // Modulo calculation allows looping over the 25 statements for 33 teams
+      const statementIndex = (teamNumber - 1) % problemStatements.length;
+      const selected = problemStatements[statementIndex];
+
+      // Update the display fields
+      document.getElementById("assignedTeam").innerText = `Assigned to Team ${teamNumber}`;
+      document.getElementById("psCode").innerText = selected.code;
+      document.getElementById("psTheme").innerText = selected.sector;
+      document.getElementById("psTitle").innerText = selected.title;
+
+      // Show result
+      resultBox.style.display = "block";
+    }
+  </script>
+</body>
+</html>
