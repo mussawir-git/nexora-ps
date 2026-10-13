@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NEXORA'26 — Problem Statement Reveal</title>
+  <title>NEXORA'26 — Problem Statement Portal</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg: #090d16;
-      --card-bg: rgba(16, 24, 40, 0.85);
-      --border: rgba(255, 255, 255, 0.12);
+      --card-bg: rgba(16, 24, 40, 0.75);
+      --card-border: rgba(255, 255, 255, 0.1);
       --primary: #6366f1;
-      --primary-glow: rgba(99, 102, 241, 0.4);
+      --primary-glow: rgba(99, 102, 241, 0.35);
       --accent: #22d3ee;
       --text: #f8fafc;
       --text-muted: #94a3b8;
@@ -28,19 +28,19 @@
 
     body {
       min-height: 100vh;
-      background: radial-gradient(circle at 50% 10%, #1e1b4b 0%, var(--bg) 60%);
+      background: radial-gradient(circle at 50% 5%, #1e1b4b 0%, var(--bg) 60%);
       color: var(--text);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 1.5rem;
+      padding: 2.5rem 1.5rem;
     }
 
     .container {
-      width: 100%;
-      max-width: 650px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    header {
       text-align: center;
+      margin-bottom: 2.5rem;
     }
 
     .badge {
@@ -49,162 +49,272 @@
       border-radius: 9999px;
       font-size: 0.8rem;
       font-weight: 700;
-      text-transform: uppercase;
       letter-spacing: 0.1em;
+      text-transform: uppercase;
       background: rgba(99, 102, 241, 0.15);
       color: var(--accent);
       border: 1px solid rgba(34, 211, 238, 0.3);
-      margin-bottom: 1rem;
+      margin-bottom: 0.75rem;
     }
 
     h1 {
-      font-size: 2.5rem;
+      font-size: 2.75rem;
       font-weight: 700;
-      margin-bottom: 0.5rem;
       background: linear-gradient(135deg, #ffffff 40%, var(--accent) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
     }
 
     p.subtitle {
       color: var(--text-muted);
+      font-size: 1.05rem;
+    }
+
+    /* Controls Bar */
+    .controls {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
       margin-bottom: 2rem;
+    }
+
+    .search-box {
+      width: 100%;
+    }
+
+    .search-box input {
+      width: 100%;
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid var(--card-border);
+      color: #fff;
+      padding: 0.95rem 1.25rem;
+      border-radius: 12px;
+      font-size: 1rem;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .search-box input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.2);
+    }
+
+    /* Filter Pills */
+    .filter-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .filter-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .filter-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+    }
+
+    .filter-btn.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+      box-shadow: 0 4px 12px var(--primary-glow);
+    }
+
+    /* Grid of Statements */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.25rem;
     }
 
     .card {
       background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 2rem;
-      backdrop-filter: blur(16px);
-      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
-    }
-
-    .input-group {
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 1.5rem;
       display: flex;
-      gap: 10px;
-      margin-bottom: 1rem;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.25s ease;
+      backdrop-filter: blur(12px);
     }
 
-    input {
-      flex: 1;
-      background: rgba(15, 23, 42, 0.8);
-      border: 1px solid var(--border);
-      color: #fff;
-      padding: 0.9rem 1.2rem;
-      border-radius: 12px;
-      font-size: 1.1rem;
-      outline: none;
+    .card:hover {
+      border-color: rgba(34, 211, 238, 0.4);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.5);
     }
 
-    input:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 2px rgba(34, 211, 238, 0.3);
+    .card-top {
+      margin-bottom: 1.25rem;
     }
 
-    button {
-      background: linear-gradient(135deg, var(--primary), #4f46e5);
-      color: #fff;
-      font-weight: 700;
-      border: none;
-      padding: 0.9rem 1.8rem;
-      border-radius: 12px;
-      cursor: pointer;
-      font-size: 1rem;
-      transition: transform 0.15s ease;
-    }
-
-    button:hover {
-      transform: translateY(-2px);
-    }
-
-    .error-msg {
-      color: #f87171;
-      font-size: 0.9rem;
-      margin-top: 0.5rem;
-      display: none;
-    }
-
-    /* Result Card */
-    #resultBox {
-      display: none;
-      margin-top: 1.75rem;
-      padding-top: 1.75rem;
-      border-top: 1px solid var(--border);
-      text-align: center;
-    }
-
-    .team-badge {
-      display: inline-block;
-      color: #a5b4fc;
-      font-size: 0.9rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
+    .header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       margin-bottom: 0.75rem;
     }
 
     .code-badge {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 1.35rem;
+      font-size: 0.95rem;
       font-weight: 700;
       color: var(--accent);
       background: rgba(34, 211, 238, 0.1);
-      border: 1px dashed rgba(34, 211, 238, 0.4);
-      display: inline-block;
-      padding: 0.4rem 1.2rem;
-      border-radius: 8px;
-      margin-bottom: 1rem;
+      padding: 3px 8px;
+      border-radius: 6px;
     }
 
-    .theme-pill {
-      display: inline-block;
-      background: rgba(255, 255, 255, 0.08);
-      padding: 5px 14px;
-      border-radius: 6px;
-      color: #cbd5e1;
-      font-size: 0.85rem;
-      font-weight: 600;
+    .sector-badge {
+      font-size: 0.75rem;
+      font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      margin-bottom: 0.85rem;
+      color: #cbd5e1;
+      background: rgba(255, 255, 255, 0.08);
+      padding: 4px 8px;
+      border-radius: 4px;
     }
 
     .statement-title {
-      font-size: 1.45rem;
+      font-size: 1.15rem;
       font-weight: 700;
-      color: #ffffff;
-      line-height: 1.35;
+      color: #fff;
+      line-height: 1.4;
+    }
+
+    .select-btn {
+      width: 100%;
+      background: transparent;
+      border: 1px solid rgba(99, 102, 241, 0.4);
+      color: #cbd5e1;
+      padding: 0.65rem 1rem;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .select-btn:hover {
+      background: linear-gradient(135deg, var(--primary), #4f46e5);
+      color: #fff;
+      border-color: transparent;
+      box-shadow: 0 4px 15px var(--primary-glow);
+    }
+
+    /* Modal for Chosen Statement */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(8px);
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      z-index: 100;
+    }
+
+    .modal-box {
+      background: #0f172a;
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      max-width: 550px;
+      width: 100%;
+      padding: 2rem;
+      text-align: center;
+      animation: popIn 0.25s ease-out;
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.95); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .modal-box h2 {
+      margin: 1rem 0;
+      font-size: 1.45rem;
+      color: #fff;
+    }
+
+    .close-btn {
+      background: #334155;
+      color: #fff;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 1.5rem;
+    }
+
+    .close-btn:hover {
+      background: #475569;
+    }
+
+    .no-results {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 3rem;
+      color: var(--text-muted);
+      font-size: 1.1rem;
     }
   </style>
 </head>
 <body>
 
   <div class="container">
-    <div class="badge">NEXORA '26 Hackathon</div>
-    <h1>Problem Statement Reveal</h1>
-    <p class="subtitle">Enter your Team Number (1 – 33) to unlock your statement</p>
+    <header>
+      <div class="badge">NEXORA '26 Hackathon</div>
+      <h1>Choose Your Problem Statement</h1>
+      <p class="subtitle">Filter by sector theme or search keywords to choose your challenge.</p>
+    </header>
 
-    <div class="card">
-      <div class="input-group">
+    <div class="controls">
+      <div class="search-box">
         <input 
-          type="number" 
-          id="teamInput" 
-          placeholder="Enter Team No (e.g. 1 to 33)" 
-          min="1" 
-          max="33"
+          type="text" 
+          id="searchInput" 
+          placeholder="Search keywords (e.g., AI, Waste, Flood, Crop)..." 
+          oninput="renderCards()"
         />
-        <button type="button" id="unlockBtn">Unlock</button>
       </div>
 
-      <div id="errorMsg" class="error-msg">Please enter a valid Team Number between 1 and 33.</div>
-
-      <div id="resultBox">
-        <span class="team-badge" id="assignedTeam">Assigned to Team</span><br />
-        <div class="code-badge" id="psCode">NX2601</div><br />
-        <span class="theme-pill" id="psTheme">Theme Sector</span>
-        <h2 class="statement-title" id="psTitle">Problem Statement</h2>
+      <div class="filter-pills" id="themePills">
+        <!-- Rendered dynamically -->
       </div>
+    </div>
+
+    <div class="grid" id="problemGrid">
+      <!-- Statements injected here -->
+    </div>
+  </div>
+
+  <!-- Selection Modal -->
+  <div class="modal-backdrop" id="modal">
+    <div class="modal-box">
+      <span class="badge" style="margin-bottom: 0.5rem;">Your Selected Challenge</span><br />
+      <div class="code-badge" id="modalCode" style="font-size: 1.2rem; margin-top: 0.5rem;"></div><br />
+      <span class="sector-badge" id="modalSector" style="display:inline-block; margin-top:0.5rem;"></span>
+      <h2 id="modalTitle"></h2>
+      <p style="color: var(--text-muted); font-size: 0.95rem;">You have selected this problem statement for your hackathon submission.</p>
+      <button class="close-btn" onclick="closeModal()">Close / Choose Another</button>
     </div>
   </div>
 
@@ -237,42 +347,74 @@
       { code: "NX2625", sector: "Private Sector", title: "ML-Based Supplier Disruption Risk Predictor" }
     ];
 
-    function revealProblem() {
-      const inputEl = document.getElementById("teamInput");
-      const errorMsg = document.getElementById("errorMsg");
-      const resultBox = document.getElementById("resultBox");
+    let activeSector = "All";
 
-      const val = parseInt(inputEl.value, 10);
+    // Setup Theme Buttons
+    function initThemes() {
+      const themes = ["All", ...new Set(problemStatements.map(p => p.sector))];
+      const pillsContainer = document.getElementById("themePills");
 
-      // Validation
-      if (isNaN(val) || val < 1 || val > 33) {
-        errorMsg.style.display = "block";
-        resultBox.style.display = "none";
+      pillsContainer.innerHTML = themes.map(theme => `
+        <button class="filter-btn ${theme === 'All' ? 'active' : ''}" onclick="filterTheme('${theme}', this)">
+          ${theme}
+        </button>
+      `).join('');
+    }
+
+    function filterTheme(theme, element) {
+      activeSector = theme;
+      document.querySelectorAll(".filter-btn").forEach(btn => btn.classList.remove("active"));
+      element.classList.add("active");
+      renderCards();
+    }
+
+    function renderCards() {
+      const query = document.getElementById("searchInput").value.toLowerCase();
+      const grid = document.getElementById("problemGrid");
+
+      const filtered = problemStatements.filter(item => {
+        const matchesTheme = (activeSector === "All" || item.sector === activeSector);
+        const matchesSearch = item.title.toLowerCase().includes(query) || 
+                              item.code.toLowerCase().includes(query) ||
+                              item.sector.toLowerCase().includes(query);
+        return matchesTheme && matchesSearch;
+      });
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `<div class="no-results">No problem statements found matching your criteria.</div>`;
         return;
       }
 
-      errorMsg.style.display = "none";
-
-      // Modulo 25 mapping
-      const statementIndex = (val - 1) % problemStatements.length;
-      const statement = problemStatements[statementIndex];
-
-      document.getElementById("assignedTeam").innerText = "Assigned to Team " + val;
-      document.getElementById("psCode").innerText = statement.code;
-      document.getElementById("psTheme").innerText = statement.sector;
-      document.getElementById("psTitle").innerText = statement.title;
-
-      // Force display
-      resultBox.style.display = "block";
+      grid.innerHTML = filtered.map(item => `
+        <div class="card">
+          <div class="card-top">
+            <div class="header-row">
+              <span class="code-badge">${item.code}</span>
+              <span class="sector-badge">${item.sector}</span>
+            </div>
+            <h3 class="statement-title">${item.title}</h3>
+          </div>
+          <button class="select-btn" onclick="openModal('${item.code}', '${item.sector}', '${item.title.replace(/'/g, "\\'")}')">
+            Select Statement
+          </button>
+        </div>
+      `).join('');
     }
 
-    // Attach click and enter key listeners
-    document.getElementById("unlockBtn").addEventListener("click", revealProblem);
-    document.getElementById("teamInput").addEventListener("keydown", function(e) {
-      if (e.key === "Enter") {
-        revealProblem();
-      }
-    });
+    function openModal(code, sector, title) {
+      document.getElementById("modalCode").innerText = code;
+      document.getElementById("modalSector").innerText = sector;
+      document.getElementById("modalTitle").innerText = title;
+      document.getElementById("modal").style.display = "flex";
+    }
+
+    function closeModal() {
+      document.getElementById("modal").style.display = "none";
+    }
+
+    // Initialize
+    initThemes();
+    renderCards();
   </script>
 </body>
 </html>
